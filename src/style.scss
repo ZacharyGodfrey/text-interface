@@ -2,7 +2,7 @@
 
 $fontSize: 18px;
 $fontFamily: monospace;
-$colorForeground: #E8E8E8;
+$colorForeground: #64DC78;
 $colorBackground: #202020;
 
 // Global Styles
@@ -37,5 +37,8 @@ main {
     margin: 0 auto;
     padding: 1rem;
     line-height: 1.5;
+    letter-spacing: 1px;
+    word-spacing: 2px;
+    font-weight: bold;
     white-space: pre-line;
 }

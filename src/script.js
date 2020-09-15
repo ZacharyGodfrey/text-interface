@@ -1,45 +1,83 @@
+const SYMBOLS = {
+    arrowUp: '&#11165;',
+    arrowDown: '&#11167;',
+    arrowLeft: '&#11164;',
+    arrowRight: '&#11166;',
+}
+
 const SCREENS = [
     {
         name: 'main menu',
         content: [
-            'MAIN MENU',
-            '',
-            'Press [M] at any time to return to Main Menu',
-            '',
-            '[1] Go left.',
-            '',
-            '[2] Go right.',
+            'Welcome to Text Interface. This site is designed to function like an old text-based strategy game.'
         ],
-        actions: {
-            Digit1: () => navigateTo('left'),
-            Numpad1: () => navigateTo('left'),
-            Digit2: () => navigateTo('right'),
-            Numpad2: () => navigateTo('right'),
-        },
+        actions: [
+            {
+                keys: ['ARROWLEFT', '4'],
+                symbol: SYMBOLS.arrowLeft,
+                label: 'Go left.',
+                hidden: false,
+                invoke: () => navigateTo('left'),
+            },
+            {
+                keys: ['ARROWRIGHT', '6'],
+                symbol: SYMBOLS.arrowRight,
+                label: 'Go right.',
+                hidden: false,
+                invoke: () => navigateTo('right'),
+            },
+            {
+                keys: ['ARROWUP', '8'],
+                symbol: '',
+                label: '',
+                hidden: true,
+                invoke: () => navigateTo('hidden room'),
+            }
+        ],
     },
     {
         name: 'left',
         content: [
-            'LEFT',
-            '',
-            'You have gone left.'
+            'You have gone left.',
         ],
-        actions: {},
+        actions: [],
     },
     {
         name: 'right',
         content: [
-            'RIGHT',
-            '',
             'You have gone right.'
         ],
-        actions: {},
+        actions: [],
+    },
+    {
+        name: 'hidden room',
+        content: [
+            'You found the hidden room!'
+        ],
+        actions: [],
     }
 ];
 
 const STATE = {
     currentScreen: null,
 };
+
+const GLOBAL_ACTIONS = [
+    {
+        keys: ['M'],
+        symbol: 'M',
+        label: 'Main Menu',
+        hidden: false,
+        invoke: () => navigateTo('main menu'),
+    },
+    {
+        keys: ['*'],
+        symbol: '',
+        label: '',
+        hidden: true,
+        invoke: () => enterCheatCode(),
+    }
+];
 
 const navigateTo = (screenName) => {
     const screen = SCREENS.find(x => x.name === screenName);
@@ -58,37 +96,67 @@ const render = () => {
     const screen = STATE.currentScreen;
 
     if (screen) {
-        console.log(`Rendering [${STATE.currentScreen.name}]`);
+        const separator = '\n\n----------\n\n';
 
-        domNode.innerText = screen.content.join('\n');
+        const localActions = screen.actions.filter(x => !x.hidden).map(x => {
+            return `[${x.symbol}] ${x.label}`;
+        }).join('\n\n');
+
+        const globalActions = GLOBAL_ACTIONS.filter(x => !x.hidden).map(x => {
+            return `[${x.symbol}] ${x.label}`;
+        }).join('\n\n');
+
+        const content = [
+            screen.name.toUpperCase(),
+            screen.content.join('\n\n'),
+            localActions.length ? localActions : '',
+            globalActions,
+        ];
+
+        domNode.innerHTML = content.filter(x => x.length > 0).join(separator);
     }
 };
 
-const handleGlobalInput = (event) => {
-    switch (event.code) {
-        case 'KeyM': navigateTo('main menu'); return true;
-
-        default: return false;
-    }
-};
-
-const handleScreenInput = (event) => {
+const handleLocalInput = (input) => {
     const screen = STATE.currentScreen;
 
-    if (screen && screen.actions[event.code]) {
-        screen.actions[event.code]();
+    if (screen) {
+        const action = screen.actions.find(action => action.keys.includes(input));
 
-        return true;
-    } else {
-        console.log(`Unrecognized Input [${event.code}]`);
+        if (action) {
+            action.invoke();
 
-        return false;
+            return true;
+        }
+    }
+
+    return false;
+};
+
+const handleGlobalInput = (input) => {
+    switch (input) {
+        case 'M': navigateTo('main menu'); return true;
+        case '*': enterCheatCode(); return true;
+    }
+
+    return false;
+};
+
+const enterCheatCode = () => {
+    const cheatCode = window.prompt('Enter a cheat code', '');
+
+    switch (cheatCode) {
+        case 'zach': navigateTo('hidden room'); break;
     }
 };
 
 (() => {
     document.addEventListener('keyup', (event) => {
-        return handleGlobalInput(event) || handleScreenInput(event);
+        const key = event.key.toUpperCase();
+
+        if (!(handleLocalInput(key) || handleGlobalInput(key))) {
+            console.log(`Unrecognized Input [${key}]`);
+        }
     });
 
     navigateTo('main menu');
