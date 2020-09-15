@@ -3,13 +3,18 @@ const SYMBOLS = {
     arrowDown: '&#11167;',
     arrowLeft: '&#11164;',
     arrowRight: '&#11166;',
+    // More here:
+    // - http://xahlee.info/comp/unicode_arrows.html
+    // - https://www.w3schools.com/charsets/ref_utf_misc_symbols.asp
 }
 
 const SCREENS = [
     {
         name: 'main menu',
         content: [
-            'Welcome to Text Interface. This site is designed to function like an old text-based strategy game.'
+            `Welcome to Text Interface. This site is designed to function like an old text-based strategy game.`,
+            `Below you will find two lists of actions you can take; the first will change based on which screen you're viewing and the second displays options that are available on all screens.`,
+            `The symbol in brackets indicates which key you must press to select the action.`,
         ],
         actions: [
             {
@@ -38,21 +43,21 @@ const SCREENS = [
     {
         name: 'left',
         content: [
-            'You have gone left.',
+            `You have gone left.`,
         ],
         actions: [],
     },
     {
         name: 'right',
         content: [
-            'You have gone right.'
+            `You have gone right.`,
         ],
         actions: [],
     },
     {
         name: 'hidden room',
         content: [
-            'You found the hidden room!'
+            `You found the hidden room!`,
         ],
         actions: [],
     }
