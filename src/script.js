@@ -1,9 +1,4 @@
 const SYMBOLS = {
-    arrowUp: '&#11165;',
-    arrowDown: '&#11167;',
-    arrowLeft: '&#11164;',
-    arrowRight: '&#11166;',
-    // More here:
     // - http://xahlee.info/comp/unicode_arrows.html
     // - https://www.w3schools.com/charsets/ref_utf_misc_symbols.asp
 }
@@ -18,24 +13,21 @@ const SCREENS = [
         ],
         actions: [
             {
-                keys: ['ARROWLEFT', '4'],
-                symbol: SYMBOLS.arrowLeft,
+                keys: ['L', '4'],
+                symbol: 'L',
                 label: 'Go left.',
-                hidden: false,
                 invoke: () => navigateTo('left'),
             },
             {
-                keys: ['ARROWRIGHT', '6'],
-                symbol: SYMBOLS.arrowRight,
+                keys: ['R', '6'],
+                symbol: 'R',
                 label: 'Go right.',
-                hidden: false,
                 invoke: () => navigateTo('right'),
             },
             {
-                keys: ['ARROWUP', '8'],
+                keys: ['ARROWUP'],
                 symbol: '',
                 label: '',
-                hidden: true,
                 invoke: () => navigateTo('hidden room'),
             }
         ],
@@ -72,14 +64,12 @@ const GLOBAL_ACTIONS = [
         keys: ['M'],
         symbol: 'M',
         label: 'Main Menu',
-        hidden: false,
         invoke: () => navigateTo('main menu'),
     },
     {
         keys: ['*'],
         symbol: '',
         label: '',
-        hidden: true,
         invoke: () => enterCheatCode(),
     }
 ];
@@ -103,11 +93,11 @@ const render = () => {
     if (screen) {
         const separator = '\n\n----------\n\n';
 
-        const localActions = screen.actions.filter(x => !x.hidden).map(x => {
+        const localActions = screen.actions.filter(x => x.symbol.length > 0).map(x => {
             return `[${x.symbol}] ${x.label}`;
         }).join('\n\n');
 
-        const globalActions = GLOBAL_ACTIONS.filter(x => !x.hidden).map(x => {
+        const globalActions = GLOBAL_ACTIONS.filter(x => x.symbol.length > 0).map(x => {
             return `[${x.symbol}] ${x.label}`;
         }).join('\n\n');
 
