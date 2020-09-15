@@ -1,0 +1,46 @@
+// Variables
+
+$fontSize: 16px;
+$fontFamily: "custom-font", monospace;
+$colorForeground: #E8E8E8;
+$colorBackground: #202020;
+
+// Global Styles
+
+* {
+    position: relative;
+    box-sizing: border-box;
+}
+
+::selection {
+    color: $colorBackground;
+    background: $colorForeground;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    font-size: $fontSize;
+    font-family: $fontFamily;
+    color: $colorForeground;
+    background: $colorBackground;
+}
+
+// Element Styles
+
+main {
+    padding: 1rem;
+    line-height: 1.5;
+    white-space: pre-line;
+}
+
+#unit {
+    position: fixed;
+    visibility: hidden;
+    width: 1ch;
+    height: 1ch;
+}
