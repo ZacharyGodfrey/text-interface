@@ -22,13 +22,11 @@ const index = readFile('./src/index.html');
 const favicon = readFile('./src/favicon.png', 'base64');
 const style = compileSCSS(readFile('./src/style.scss'));
 const script = readFile('./src/script.js');
-const font = readFile('./src/comfortaa.ttf', 'base64');
 
 // Write Output
 
 const page = index
     .replace('/* favicon */', favicon)
-    .replace('/* font */', font)
     .replace('/* style */', style)
     .replace('/* script */', script);
 

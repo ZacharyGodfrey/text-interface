@@ -1,7 +1,7 @@
 // Variables
 
-$fontSize: 16px;
-$fontFamily: "custom-font", monospace;
+$fontSize: 18px;
+$fontFamily: monospace;
 $colorForeground: #E8E8E8;
 $colorBackground: #202020;
 
@@ -33,14 +33,9 @@ html, body {
 // Element Styles
 
 main {
+    max-width: 80ch;
+    margin: 0 auto;
     padding: 1rem;
     line-height: 1.5;
     white-space: pre-line;
-}
-
-#unit {
-    position: fixed;
-    visibility: hidden;
-    width: 1ch;
-    height: 1ch;
 }
