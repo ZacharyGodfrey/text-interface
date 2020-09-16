@@ -21,6 +21,7 @@ const compileSCSS = (fileContent) => scss.renderSync({
 const index = readFile('./src/index.html');
 const favicon = readFile('./src/favicon.png', 'base64');
 const style = compileSCSS(readFile('./src/style.scss'));
+const config = readFile('./src/config.json');
 const script = readFile('./src/script.js');
 
 // Write Output
@@ -28,6 +29,7 @@ const script = readFile('./src/script.js');
 const page = index
     .replace('/* favicon */', favicon)
     .replace('/* style */', style)
+    .replace('/* config */', config)
     .replace('/* script */', script);
 
 emptyFolder('./dist');

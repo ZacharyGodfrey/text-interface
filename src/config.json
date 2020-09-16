@@ -1,0 +1,71 @@
+{
+    "initialState": "init",
+    "states": {
+        "init": {
+            "title": "Loading",
+            "content": [
+                "[==========]"
+            ],
+            "actions": [],
+            "options": {
+                "disableActions": true
+            }
+        },
+        "home": {
+            "title": "Text Interface",
+            "content": [
+                "Welcome to Text Interface. This site is designed to function like an old text-based strategy game.",
+                "Below you will find two lists of actions you can take; the first will change based on which screen you're viewing and the second displays options that are available on all screens.",
+                "The symbol in brackets indicates which key you must press to select the action."
+            ],
+            "actions": [
+                {
+                    "inputs": ["L"],
+                    "label": "[L] Go left.",
+                    "next": "left"
+                },
+                {
+                    "inputs": ["R"],
+                    "label": "[R] Go right.",
+                    "next": "right"
+                }
+            ]
+        },
+        "left": {
+            "title": "Left",
+            "content": ["You have gone left."],
+            "actions": []
+        },
+        "right": {
+            "title": "Right",
+            "content": ["You have gone right."],
+            "actions": []
+        },
+        "hiddenRoom": {
+            "title": "Hidden Room",
+            "content": [
+                "You found the hidden room!",
+                "There should probably be something cool in here...",
+                "Oh well, come back later I guess."
+            ],
+            "actions": []
+        },
+        "cheatCode": {
+            "title": "Cheat Code",
+            "content": [],
+            "actions": []
+        }
+    },
+    "globalActions": [
+        {
+            "inputs": ["H"],
+            "label": "[H] Home",
+            "next": "home"
+        },
+        {
+            "inputs": ["*"],
+            "label": "",
+            "next": "cheatCode"
+        }
+    ]
+}
