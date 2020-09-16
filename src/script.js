@@ -3,156 +3,116 @@ const SYMBOLS = {
     // - https://www.w3schools.com/charsets/ref_utf_misc_symbols.asp
 }
 
-const SCREENS = [
-    {
-        name: 'main menu',
+const STATES = {
+    home: {
+        title: `Text Interface`,
         content: [
             `Welcome to Text Interface. This site is designed to function like an old text-based strategy game.`,
             `Below you will find two lists of actions you can take; the first will change based on which screen you're viewing and the second displays options that are available on all screens.`,
             `The symbol in brackets indicates which key you must press to select the action.`,
         ],
+        enter: () => {},
         actions: [
             {
-                keys: ['L', '4'],
-                symbol: 'L',
-                label: 'Go left.',
-                invoke: () => navigateTo('left'),
+                triggers: ['L'],
+                label: `[L] Go left.`,
+                next: 'left',
             },
             {
-                keys: ['R', '6'],
-                symbol: 'R',
-                label: 'Go right.',
-                invoke: () => navigateTo('right'),
+                triggers: ['R'],
+                label: `[R] Go right.`,
+                next: 'right',
             },
-            {
-                keys: ['ARROWUP'],
-                symbol: '',
-                label: '',
-                invoke: () => navigateTo('hidden room'),
-            }
         ],
     },
-    {
-        name: 'left',
-        content: [
-            `You have gone left.`,
-        ],
+    left: {
+        title: `Left`,
+        content: [`You have gone left.`],
+        enter: () => {},
         actions: [],
     },
-    {
-        name: 'right',
-        content: [
-            `You have gone right.`,
-        ],
+    right: {
+        title: `Right`,
+        content: [`You have gone right.`],
+        enter: () => {},
         actions: [],
     },
-    {
-        name: 'hidden room',
-        content: [
-            `You found the hidden room!`,
-        ],
+    hiddenRoom: {
+        title: `Hidden Room`,
+        content: [`You found the hidden room!`],
+        enter: () => {},
         actions: [],
-    }
-];
+    },
+    cheatCode: {
+        title: `Cheat Code`,
+        content: [],
+        enter: () => {
+            const cheatCode = window.prompt('Enter a cheat code', '');
 
-const STATE = {
-    currentScreen: null,
+            switch (cheatCode) {
+                case 'hide': nextState('hiddenRoom'); break;
+                default: nextState(HISTORY[1]); break;
+            }
+        },
+        actions: [],
+    },
 };
 
 const GLOBAL_ACTIONS = [
     {
-        keys: ['M'],
-        symbol: 'M',
-        label: 'Main Menu',
-        invoke: () => navigateTo('main menu'),
+        triggers: ['H'],
+        label: `[H] Home`,
+        next: 'home',
     },
     {
-        keys: ['*'],
-        symbol: '',
+        triggers: ['*'],
         label: '',
-        invoke: () => enterCheatCode(),
+        next: 'cheatCode',
     }
 ];
 
-const navigateTo = (screenName) => {
-    const screen = SCREENS.find(x => x.name === screenName);
+const HISTORY = [];
 
-    if (screen) {
-        STATE.currentScreen = screen;
+const handleInput = (input) => {
+    const globalAction = GLOBAL_ACTIONS.find(x => x.triggers.includes(input));
+    const localAction = STATES[HISTORY[0]].actions.find(x => x.triggers.includes(input));
+    const action = globalAction || localAction;
 
-        render();
+    if (action) {
+        nextState(action.next);
     } else {
-        console.log(`Unrecognized Screen [${screenName}]`);
+        console.log(`BAD_INPUT [${input}]`);
     }
 };
 
-const render = () => {
-    const domNode = document.getElementById('screen');
-    const screen = STATE.currentScreen;
+const nextState = (stateName) => {
+    if (STATES[stateName]) {
+        HISTORY.unshift(stateName);
 
-    if (screen) {
-        const separator = '\n\n----------\n\n';
+        const currentState = STATES[HISTORY[0]];
 
-        const localActions = screen.actions.filter(x => x.symbol.length > 0).map(x => {
-            return `[${x.symbol}] ${x.label}`;
-        }).join('\n\n');
+        render(currentState);
 
-        const globalActions = GLOBAL_ACTIONS.filter(x => x.symbol.length > 0).map(x => {
-            return `[${x.symbol}] ${x.label}`;
-        }).join('\n\n');
-
-        const content = [
-            screen.name.toUpperCase(),
-            screen.content.join('\n\n'),
-            localActions.length ? localActions : '',
-            globalActions,
-        ];
-
-        domNode.innerHTML = content.filter(x => x.length > 0).join(separator);
+        currentState.enter();
+    } else {
+        console.log(`BAD_STATE [${stateName}]`);
     }
 };
 
-const handleLocalInput = (input) => {
-    const screen = STATE.currentScreen;
+const render = (state) => {
+    const localActions = state.actions.map(x => x.label).filter(x => x.length > 0);
+    const globalActions = GLOBAL_ACTIONS.map(x => x.label).filter(x => x.length > 0);
 
-    if (screen) {
-        const action = screen.actions.find(action => action.keys.includes(input));
-
-        if (action) {
-            action.invoke();
-
-            return true;
-        }
-    }
-
-    return false;
-};
-
-const handleGlobalInput = (input) => {
-    switch (input) {
-        case 'M': navigateTo('main menu'); return true;
-        case '*': enterCheatCode(); return true;
-    }
-
-    return false;
-};
-
-const enterCheatCode = () => {
-    const cheatCode = window.prompt('Enter a cheat code', '');
-
-    switch (cheatCode) {
-        case 'zach': navigateTo('hidden room'); break;
-    }
+    document.getElementById('screen').innerHTML = [
+        state.title,
+        state.content.join('\n\n'),
+        localActions.join('\n\n'),
+        globalActions.join('\n\n'),
+    ].filter(x => x.length > 0).join('\n\n----------\n\n');
 };
 
 (() => {
-    document.addEventListener('keyup', (event) => {
-        const key = event.key.toUpperCase();
+    nextState('home');
 
-        if (!(handleLocalInput(key) || handleGlobalInput(key))) {
-            console.log(`Unrecognized Input [${key}]`);
-        }
-    });
-
-    navigateTo('main menu');
+    document.addEventListener('keyup', (event) => handleInput(event.key.toUpperCase()));
 })();
