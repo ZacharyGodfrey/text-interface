@@ -1,7 +1,17 @@
-const SYMBOLS = {
-    // - http://xahlee.info/comp/unicode_arrows.html
-    // - https://www.w3schools.com/charsets/ref_utf_misc_symbols.asp
-}
+const HISTORY = [];
+
+const GLOBAL_ACTIONS = [
+    {
+        triggers: ['H'],
+        label: `[H] Home`,
+        next: 'home',
+    },
+    {
+        triggers: ['*'],
+        label: '',
+        next: 'cheatCode',
+    }
+];
 
 const STATES = {
     home: {
@@ -62,21 +72,6 @@ const STATES = {
     },
 };
 
-const GLOBAL_ACTIONS = [
-    {
-        triggers: ['H'],
-        label: `[H] Home`,
-        next: 'home',
-    },
-    {
-        triggers: ['*'],
-        label: '',
-        next: 'cheatCode',
-    }
-];
-
-const HISTORY = [];
-
 const handleInput = (input) => {
     const globalAction = GLOBAL_ACTIONS.find(x => x.triggers.includes(input));
     const localAction = STATES[HISTORY[0]].actions.find(x => x.triggers.includes(input));
@@ -117,6 +112,5 @@ const render = (state) => {
 
 (() => {
     nextState('home');
-
     document.addEventListener('keyup', (event) => handleInput(event.key.toUpperCase()));
 })();

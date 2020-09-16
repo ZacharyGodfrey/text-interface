@@ -1,11 +1,7 @@
-// Variables
-
 $fontSize: 18px;
 $fontFamily: monospace;
 $colorForeground: #64DC78;
 $colorBackground: #202020;
-
-// Global Styles
 
 * {
     position: relative;
@@ -29,8 +25,6 @@ html, body {
     color: $colorForeground;
     background: $colorBackground;
 }
-
-// Element Styles
 
 main {
     max-width: 80ch;

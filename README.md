@@ -1,11 +1,11 @@
-# text-interface
+# Text Interface
 
 A text-based user interface.
 
 ## Running Locally
 
 - Run `npm i` to install dependencies
-- Run `npm run local` to start the local server
+- Run `npm run local` to start the local server (performs initial build and rebuilds when `src` files change)
 - Visit `http://localhost:8080` to view the site
 
 ## Hosting
@@ -13,3 +13,8 @@ A text-based user interface.
 This project is hosted [here](https://zg-text-interface.netlify.app) on Netlify.
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/c4600efe-94c0-471f-9231-2172eef38643/deploy-status)](https://app.netlify.com/sites/zg-text-interface/deploys)
+
+**Build Settings:**
+
+- Build Command: `npm run build`
+- Publish Directory: `dist`
