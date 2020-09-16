@@ -39,7 +39,11 @@ const STATES = {
     },
     hiddenRoom: {
         title: `Hidden Room`,
-        content: [`You found the hidden room!`],
+        content: [
+            `You found the hidden room!`,
+            `There should probably be something cool in here...`,
+            `Oh well, come back later I guess.`
+        ],
         enter: () => {},
         actions: [],
     },
