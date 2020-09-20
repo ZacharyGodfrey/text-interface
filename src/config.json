@@ -14,7 +14,7 @@
         "home": {
             "title": "Text Interface",
             "content": [
-                "Welcome to Text Interface. This site is designed to function like an old text-based strategy game.",
+                "Welcome to Text Interface. This site is designed to function like an old text-based adventure game.",
                 "Below you will find two lists of actions you can take; the first will change based on which screen you're viewing and the second displays options that are available on all screens.",
                 "The symbol in brackets indicates which key you must press to select the action."
             ],
